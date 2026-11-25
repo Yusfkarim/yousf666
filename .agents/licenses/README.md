@@ -1,0 +1,1 @@
+The ECC MIT license text is retained in `ECC-LICENSE` and applies to the copied ECC files. The Karpathy skill's upstream README and its `SKILL.md` frontmatter declare MIT; the source repository at the inspected revision did not include a standalone license file. Source repository URLs and pinned inspection commits are recorded in `../README.md`.
