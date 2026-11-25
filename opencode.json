@@ -1,0 +1,15 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "AGENTS.md",
+    ".opencode/instructions/INSTRUCTIONS.md",
+    ".agents/skills/karpathy-guidelines/SKILL.md",
+    ".agents/rules/ecc/common/*.md",
+    ".agents/rules/ecc/dart/*.md",
+    ".agents/rules/ecc/typescript/*.md",
+    ".agents/rules/ecc/web/*.md"
+  ],
+  "skills": {
+    "paths": [".agents/skills"]
+  }
+}
