@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - "arena/**"
     tags:
       - "v*.*.*"
   workflow_dispatch:
@@ -26,6 +27,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: false
 
+      - name: Test Android CI patcher
+        run: python3 .github/scripts/test_patch_flutter_android.py
+
       - name: Set up Java 17
         uses: actions/setup-java@v4
         with:
@@ -43,6 +47,9 @@ jobs:
       - name: Generate Android platform files
         working-directory: flutter_app
         run: flutter create --platforms=android --org com.yousif .
+
+      - name: Patch generated Android manifest and SDK settings
+        run: python3 .github/scripts/patch_flutter_android.py --android-dir flutter_app/android
 
       - name: Install Flutter dependencies
         working-directory: flutter_app
