@@ -1,0 +1,9 @@
+# Shared build output and local secrets
+node_modules/
+dist/
+build/
+.env
+.env.local
+.env.*.local
+!.env.example
+.DS_Store
