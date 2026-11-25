@@ -23,3 +23,5 @@ ios/Flutter/Generated.xcconfig
 ios/Flutter/flutter_export_environment.sh
 ios/Runner/GoogleService-Info.plist
 android/app/google-services.json
+.idea/
+*.iml
