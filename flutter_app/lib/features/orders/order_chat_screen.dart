@@ -1,8 +1,8 @@
+import '../../core/services/marketplace_client.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/state/app_state.dart';
 import '../../core/theme/clay_widgets.dart';
@@ -22,9 +22,9 @@ class _OrderChatScreenState extends ConsumerState<OrderChatScreen> {
   List<Map<String, dynamic>> _messages = [];
   bool _loading = true;
   bool _sending = false;
-  RealtimeChannel? _channel;
+  LocalChannel? _channel;
 
-  SupabaseClient get _client => ref.read(supabaseProvider);
+  MarketplaceClient get _client => ref.read(apiProvider);
 
   @override
   void initState() {

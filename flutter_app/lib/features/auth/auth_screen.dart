@@ -1,7 +1,7 @@
+import '../../core/services/marketplace_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/state/app_state.dart';
 import '../../core/theme/clay_widgets.dart';
@@ -34,7 +34,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _busy = true);
     try {
-      final auth = ref.read(supabaseProvider).auth;
+      final auth = ref.read(apiProvider).auth;
       if (_registering) {
         final response = await auth.signUp(
           email: _email.text.trim(),
@@ -66,10 +66,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   Future<void> _googleSignIn() async {
     setState(() => _busy = true);
     try {
-      await ref.read(supabaseProvider).auth.signInWithOAuth(
-            OAuthProvider.google,
-            redirectTo: 'io.supabase.marketplace://login-callback/',
-          );
+      await ref.read(apiProvider).auth.signInWithOAuth(OAuthProvider.google);
     } on AuthException catch (error) {
       if (mounted) _showMessage(error.message);
     } catch (error) {

@@ -1,3 +1,4 @@
+import 'marketplace_client.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
@@ -6,7 +7,6 @@ import 'dart:typed_data';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
 import 'package:image/image.dart' as image_lib;
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class ImageUploadService {
   Future<String> upload(File file, {required String folder});
@@ -49,9 +49,9 @@ Future<CompressedImage> compressMarketplaceImage(File file) async {
   throw const FormatException('Choose a smaller image; compressed photos must be under 120 KB');
 }
 
-class SupabaseImageUploadService implements ImageUploadService {
-  SupabaseImageUploadService(this.client);
-  final SupabaseClient client;
+class LocalImageUploadService implements ImageUploadService {
+  LocalImageUploadService(this.client);
+  final MarketplaceClient client;
 
   @override
   Future<String> upload(File file, {required String folder}) async {
@@ -104,12 +104,12 @@ class CloudinaryImageUploadService implements ImageUploadService {
   }
 }
 
-ImageUploadService createImageUploadService(SupabaseClient client) {
+ImageUploadService createImageUploadService(MarketplaceClient client) {
   const cloudName = String.fromEnvironment('CLOUDINARY_CLOUD_NAME');
   const uploadPreset = String.fromEnvironment('CLOUDINARY_UPLOAD_PRESET');
-  const provider = String.fromEnvironment('IMAGE_PROVIDER', defaultValue: 'supabase');
+  const provider = String.fromEnvironment('IMAGE_PROVIDER', defaultValue: 'local');
   if (provider == 'cloudinary') {
     return CloudinaryImageUploadService(cloudName: cloudName, uploadPreset: uploadPreset);
   }
-  return SupabaseImageUploadService(client);
+  return LocalImageUploadService(client);
 }

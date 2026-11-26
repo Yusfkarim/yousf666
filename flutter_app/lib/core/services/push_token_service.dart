@@ -1,16 +1,16 @@
+import 'marketplace_client.dart';
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PushTokenService {
   StreamSubscription<String>? _tokenRefreshSubscription;
   String? _syncedUserId;
   String? _syncingUserId;
 
-  Future<void> syncCurrentUser(SupabaseClient client) async {
+  Future<void> syncCurrentUser(MarketplaceClient client) async {
     final userId = client.auth.currentUser?.id;
     if (kIsWeb || userId == null || _syncedUserId == userId || _syncingUserId == userId) return;
     _syncingUserId = userId;

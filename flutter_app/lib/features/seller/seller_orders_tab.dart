@@ -1,9 +1,9 @@
+import '../../core/services/marketplace_client.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/models/marketplace_models.dart';
@@ -23,9 +23,9 @@ class _SellerOrdersTabState extends ConsumerState<SellerOrdersTab> {
   List<Map<String, dynamic>> _orders = [];
   bool _loading = true;
   final Set<String> _busyOrders = {};
-  RealtimeChannel? _channel;
+  LocalChannel? _channel;
 
-  SupabaseClient get _client => ref.read(supabaseProvider);
+  MarketplaceClient get _client => ref.read(apiProvider);
 
   @override
   void initState() {

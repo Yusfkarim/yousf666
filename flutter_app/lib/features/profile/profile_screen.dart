@@ -29,7 +29,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Future<void> _save() async {
-    final user = ref.read(supabaseProvider).auth.currentUser;
+    final user = ref.read(apiProvider).auth.currentUser;
     if (user == null) return;
     final phone = _phoneController.text.trim();
     if (phone.isNotEmpty && !RegExp(r'^07[0-9]{9}$').hasMatch(phone)) {
@@ -38,7 +38,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     }
     setState(() => _saving = true);
     try {
-      await ref.read(supabaseProvider).from('profiles').update({
+      await ref.read(apiProvider).from('profiles').update({
         'full_name': _nameController.text.trim(),
         'phone': phone.isEmpty ? null : phone,
         'city': _cityController.text.trim(),
@@ -56,7 +56,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(supabaseProvider).auth.currentUser;
+    final user = ref.watch(apiProvider).auth.currentUser;
     if (user == null) {
       return MarketplaceScaffold(
         body: Center(child: Padding(
@@ -139,7 +139,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ])),
               const SizedBox(height: 12),
               ClayPillButton(label: 'چوونەدەرەوە', icon: Icons.logout_rounded, tone: ClayTone.coral, expand: true, onPressed: () async {
-                await ref.read(supabaseProvider).auth.signOut();
+                await ref.read(apiProvider).auth.signOut();
                 ref.invalidate(profileProvider);
                 if (context.mounted) context.go('/home');
               }),

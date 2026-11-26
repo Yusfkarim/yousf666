@@ -159,7 +159,7 @@ create policy settlements_store_or_admin_read on public.settlements
 for select to authenticated
 using (public.owns_store(store_id) or public.is_admin());
 
--- Optional public Supabase Storage backend. Uploads are limited to each user's own folder;
+-- Optional public local storage backend. Uploads are limited to each user's own folder;
 -- public reads are enabled for product/store images. Cloudinary can be selected instead.
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values ('marketplace-images', 'marketplace-images', true, 122880, array['image/webp', 'image/jpeg'])

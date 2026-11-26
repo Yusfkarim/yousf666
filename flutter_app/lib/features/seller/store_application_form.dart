@@ -43,7 +43,7 @@ class _StoreApplicationFormState extends ConsumerState<StoreApplicationForm> {
 
   Future<void> _loadCategories() async {
     try {
-      final rows = await ref.read(supabaseProvider).from('categories').select().order('sort_order');
+      final rows = await ref.read(apiProvider).from('categories').select().order('sort_order');
       if (mounted) setState(() => _categories = List<Map<String, dynamic>>.from(rows));
     } catch (_) {}
   }
@@ -64,7 +64,7 @@ class _StoreApplicationFormState extends ConsumerState<StoreApplicationForm> {
   }
 
   Future<void> _submit() async {
-    final user = ref.read(supabaseProvider).auth.currentUser;
+    final user = ref.read(apiProvider).auth.currentUser;
     if (user == null) {
       _message('بۆ دروستکردنی دوکان بچۆ ژوورەوە.');
       return;
@@ -80,7 +80,7 @@ class _StoreApplicationFormState extends ConsumerState<StoreApplicationForm> {
     }
     setState(() => _busy = true);
     try {
-      await ref.read(supabaseProvider).from('stores').insert({
+      await ref.read(apiProvider).from('stores').insert({
         'owner_id': user.id,
         'name': _name.text.trim(),
         'description': _description.text.trim(),

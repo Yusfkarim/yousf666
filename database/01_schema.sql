@@ -1,5 +1,5 @@
--- Marketplace core schema (run once in Supabase SQL Editor as the project owner).
--- PostgreSQL / Supabase Free Tier compatible; all money is stored as integer IQD.
+-- Marketplace core schema for the local PostgreSQL database.
+-- All money is stored as integer IQD.
 
 create sequence if not exists public.order_number_seq start with 1001 increment by 1;
 
@@ -167,22 +167,3 @@ select s.id as store_id,
 from public.stores s
 left join delivered d on d.store_id = s.id
 left join paid p on p.store_id = s.id;
-
--- Supabase Realtime publication setup is idempotent across fresh projects.
-do $$
-begin
-  if exists (select 1 from pg_publication where pubname = 'supabase_realtime') then
-    if not exists (
-      select 1 from pg_publication_tables
-      where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'orders'
-    ) then
-      alter publication supabase_realtime add table public.orders;
-    end if;
-    if not exists (
-      select 1 from pg_publication_tables
-      where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'messages'
-    ) then
-      alter publication supabase_realtime add table public.messages;
-    end if;
-  end if;
-end $$;

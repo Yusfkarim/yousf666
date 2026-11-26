@@ -1,4 +1,4 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
+import '../services/marketplace_client.dart';
 
 import '../models/marketplace_models.dart';
 
@@ -7,7 +7,7 @@ const _storeColumns = 'id, owner_id, name, description, category_id, logo_url, c
 class MarketplaceRepository {
   MarketplaceRepository(this.client);
 
-  final SupabaseClient client;
+  final MarketplaceClient client;
 
   Future<List<Map<String, dynamic>>> getCategories() async {
     final rows = await client.from('categories').select().order('sort_order');

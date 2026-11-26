@@ -52,7 +52,7 @@ class _SellerDashboardScreenState extends ConsumerState<SellerDashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(supabaseProvider).auth.currentUser;
+    final user = ref.watch(apiProvider).auth.currentUser;
     if (user == null) {
       return MarketplaceScaffold(
         body: Center(

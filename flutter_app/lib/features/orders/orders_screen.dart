@@ -37,7 +37,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(supabaseProvider).auth.currentUser;
+    final user = ref.watch(apiProvider).auth.currentUser;
     final profileRole = ref.watch(profileProvider).valueOrNull?['role'] as String? ?? _role;
     if (_role != profileRole) {
       _role = profileRole;

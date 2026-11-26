@@ -51,7 +51,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
   Future<void> _submit() async {
     final cart = ref.read(cartProvider);
-    final user = ref.read(supabaseProvider).auth.currentUser;
+    final user = ref.read(apiProvider).auth.currentUser;
     if (user == null) {
       context.push('/login');
       return;
@@ -75,7 +75,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         }
         return;
       }
-      final response = await ref.read(supabaseProvider).rpc('create_order', params: {
+      final response = await ref.read(apiProvider).rpc('create_order', params: {
         'p_store_id': cart.store!.id,
         'p_items_json': cart.lines.map((line) => {
               'product_id': line.product.id,

@@ -1,8 +1,8 @@
+import '../services/marketplace_client.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/marketplace_models.dart';
 import '../data/marketplace_repository.dart';
@@ -10,11 +10,11 @@ import '../services/image_upload_service.dart';
 import '../services/push_token_service.dart';
 
 final marketplaceRepositoryProvider = Provider<MarketplaceRepository>(
-  (ref) => MarketplaceRepository(ref.watch(supabaseProvider)),
+  (ref) => MarketplaceRepository(ref.watch(apiProvider)),
 );
 
 final imageUploadServiceProvider = Provider<ImageUploadService>(
-  (ref) => createImageUploadService(ref.watch(supabaseProvider)),
+  (ref) => createImageUploadService(ref.watch(apiProvider)),
 );
 
 final pushTokenServiceProvider = Provider<PushTokenService>((ref) {
@@ -23,14 +23,14 @@ final pushTokenServiceProvider = Provider<PushTokenService>((ref) {
   return service;
 });
 
-final supabaseProvider = Provider<SupabaseClient>((ref) => Supabase.instance.client);
+final apiProvider = Provider<MarketplaceClient>((ref) => appClient);
 
 final authStateProvider = StreamProvider<AuthState>(
-  (ref) => ref.watch(supabaseProvider).auth.onAuthStateChange,
+  (ref) => ref.watch(apiProvider).auth.onAuthStateChange,
 );
 
 final profileProvider = FutureProvider<Map<String, dynamic>?>((ref) async {
-  final client = ref.watch(supabaseProvider);
+  final client = ref.watch(apiProvider);
   final user = client.auth.currentUser;
   if (user == null) return null;
   return client.from('profiles').select().eq('id', user.id).maybeSingle();
@@ -97,7 +97,7 @@ final cartProvider = StateNotifierProvider<CartController, CartState>((ref) => C
 final cartQuoteProvider = FutureProvider<Map<String, dynamic>?>((ref) async {
   ref.watch(authStateProvider);
   final cart = ref.watch(cartProvider);
-  final client = ref.watch(supabaseProvider);
+  final client = ref.watch(apiProvider);
   if (cart.isEmpty || cart.store == null || client.auth.currentUser == null) return null;
   final response = await client.rpc('quote_order', params: {
     'p_store_id': cart.store!.id,

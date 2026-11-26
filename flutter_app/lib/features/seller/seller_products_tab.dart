@@ -31,7 +31,7 @@ class _SellerProductsTabState extends ConsumerState<SellerProductsTab> {
   Future<void> _load() async {
     setState(() => _loading = true);
     try {
-      final rows = await ref.read(supabaseProvider).from('products').select().eq('store_id', widget.store.id).order('created_at', ascending: false);
+      final rows = await ref.read(apiProvider).from('products').select().eq('store_id', widget.store.id).order('created_at', ascending: false);
       if (mounted) setState(() => _products = List<Map<String, dynamic>>.from(rows).map(ProductModel.fromMap).toList());
     } catch (error) {
       if (mounted) _message('کاڵاکان نەهێنران: $error');
@@ -56,7 +56,7 @@ class _SellerProductsTabState extends ConsumerState<SellerProductsTab> {
 
   Future<void> _toggle(ProductModel product, bool value) async {
     try {
-      await ref.read(supabaseProvider).from('products').update({'is_available': value}).eq('id', product.id);
+      await ref.read(apiProvider).from('products').update({'is_available': value}).eq('id', product.id);
       await _load();
     } catch (error) {
       _message('دۆخی کاڵا نەگۆڕا: $error');
@@ -77,7 +77,7 @@ class _SellerProductsTabState extends ConsumerState<SellerProductsTab> {
     );
     if (confirm != true) return;
     try {
-      await ref.read(supabaseProvider).from('products').delete().eq('id', product.id);
+      await ref.read(apiProvider).from('products').delete().eq('id', product.id);
       await _load();
     } catch (error) {
       _message('کاڵا نەسڕایەوە: $error');
@@ -207,7 +207,7 @@ class _ProductEditorSheetState extends ConsumerState<ProductEditorSheet> {
         'image_url': imageUrl,
         'is_available': _available,
       };
-      final client = ref.read(supabaseProvider);
+      final client = ref.read(apiProvider);
       if (widget.product == null) {
         await client.from('products').insert({...body, 'store_id': widget.storeId});
       } else {

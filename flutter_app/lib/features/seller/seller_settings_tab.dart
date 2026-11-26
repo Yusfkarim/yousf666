@@ -51,7 +51,7 @@ class _SellerSettingsTabState extends ConsumerState<SellerSettingsTab> {
         body['latitude'] = latitude;
         body['longitude'] = longitude;
       }
-      await ref.read(supabaseProvider).from('stores').update(body).eq('id', widget.store.id);
+      await ref.read(apiProvider).from('stores').update(body).eq('id', widget.store.id);
       final next = StoreModel(
         id: widget.store.id,
         ownerId: widget.store.ownerId,

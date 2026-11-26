@@ -12,8 +12,8 @@ These instructions apply to all work in this repository. Keep changes small, tra
 
 - Never hardcode, commit, log, or echo credentials. Use environment variables or the platform secret store; treat a credential exposed in chat or logs as compromised and rotate it.
 - Validate untrusted input at boundaries. Enforce authorization in trusted server-side code, not only in Flutter or the admin UI.
-- For Supabase changes, preserve RLS and least-privilege grants. Keep financial calculations and protected snapshots server-authoritative, and review any `SECURITY DEFINER` function and its `search_path`.
-- Do not expose service-role keys in client code or build artifacts. Client-visible Supabase anon keys are configuration, not a substitute for access policies.
+- For database changes in `database/`, preserve RLS and least-privilege grants. Keep financial calculations and protected snapshots server-authoritative, and review any `SECURITY DEFINER` function and its `search_path`.
+- Do not expose API credentials in client code or build artifacts. The anon key is a client identifier, not a substitute for database policies.
 
 ## Implementation and verification
 

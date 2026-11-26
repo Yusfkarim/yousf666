@@ -59,7 +59,7 @@ class MarketplaceApp extends ConsumerWidget {
       if (currentUserId == null) {
         unawaited(pushService.clearCurrentUser());
       } else {
-        unawaited(pushService.syncCurrentUser(ref.read(supabaseProvider)));
+        unawaited(pushService.syncCurrentUser(ref.read(apiProvider)));
       }
     });
     return MaterialApp.router(
@@ -99,9 +99,9 @@ class ConfigurationRequiredApp extends StatelessWidget {
                     child: Column(mainAxisSize: MainAxisSize.min, children: [
                       const ClayIconBadge(icon: Icons.settings_suggest_rounded, size: 60),
                       const SizedBox(height: 12),
-                      const Text('ڕێکخستنی Supabase تەواو نییە', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w800)),
+                      const Text('پەیوەندی بە ڕاژەی ناوخۆییەوە نەکرا', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w800)),
                       const SizedBox(height: 8),
-                      const Text('لە flutter_app/.env.example کۆپی دروست بکە و SUPABASE_URL و SUPABASE_ANON_KEY دابنێ؛ پاشان بە --dart-define-from-file=.env.json ئەپەکە کارپێبکە.', textAlign: TextAlign.center),
+                      const Text('دڵنیابە ڕاژەی API کارا دەکات و ئامێرەکەت هەمان تۆڕی تایلسکەیل بەکاردەهێنێت.', textAlign: TextAlign.center),
                       if (error != null) ...[
                         const SizedBox(height: 10),
                         Text('$error', textAlign: TextAlign.center, style: const TextStyle(color: ClayColors.coral, fontSize: 11)),

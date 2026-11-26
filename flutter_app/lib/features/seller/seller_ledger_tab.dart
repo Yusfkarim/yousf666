@@ -28,7 +28,7 @@ class _SellerLedgerTabState extends ConsumerState<SellerLedgerTab> {
   Future<void> _load() async {
     setState(() => _loading = true);
     try {
-      final client = ref.read(supabaseProvider);
+      final client = ref.read(apiProvider);
       final summary = await client.from('store_financial_summary').select().eq('store_id', widget.store.id).maybeSingle();
       final settlements = await client.from('settlements').select('id, amount_iqd, direction, note, created_at').eq('store_id', widget.store.id).order('created_at', ascending: false).limit(50);
       if (!mounted) return;

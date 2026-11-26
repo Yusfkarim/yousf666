@@ -55,13 +55,13 @@ class CartScreen extends ConsumerWidget {
               ],
               const SizedBox(height: 12),
               ClayPillButton(
-                label: ref.read(supabaseProvider).auth.currentUser == null ? 'چوونەژوورەوە بۆ داواکردن' : quoteAsync.isLoading ? 'هەژمارکردنی نرخ...' : 'ناردنی داواکاری',
+                label: ref.read(apiProvider).auth.currentUser == null ? 'چوونەژوورەوە بۆ داواکردن' : quoteAsync.isLoading ? 'هەژمارکردنی نرخ...' : 'ناردنی داواکاری',
                 icon: Icons.arrow_forward_rounded,
                 expand: true,
-                onPressed: quoteAsync.isLoading || (ref.read(supabaseProvider).auth.currentUser != null && quote == null)
+                onPressed: quoteAsync.isLoading || (ref.read(apiProvider).auth.currentUser != null && quote == null)
                     ? null
                     : () {
-                        if (ref.read(supabaseProvider).auth.currentUser == null) {
+                        if (ref.read(apiProvider).auth.currentUser == null) {
                           context.push('/login');
                         } else {
                           context.push('/checkout');
