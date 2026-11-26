@@ -85,19 +85,28 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-      - name: Prepare GitHub Release asset
+      - name: Prepare versioned GitHub Release asset
         id: release_asset
         working-directory: flutter_app
         shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          release_tag="v1.0.0"
+          latest="$(gh release list --limit 100 --json tagName -q '.[].tagName' \
+            | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1)"
+          if [[ -z "$latest" ]]; then
+            release_tag="v1.0.0"
+          else
+            IFS='.' read -r major minor patch <<< "${latest#v}"
+            release_tag="v${major}.${minor}.$((patch + 1))"
+          fi
           asset_path="release/yousf-marketplace-${release_tag}.apk"
           mkdir -p release
           cp build/app/outputs/flutter-apk/app-release.apk "$asset_path"
           echo "tag=${release_tag}" >> "$GITHUB_OUTPUT"
           echo "asset=${asset_path}" >> "$GITHUB_OUTPUT"
 
-      - name: Publish APK to GitHub Release
+      - name: Publish versioned APK to GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
@@ -109,6 +118,6 @@ jobs:
           else
             gh release create "$tag" "$asset" \
               --title "Yousf Marketplace $tag — Android APK" \
-              --notes "Automated Android APK build from commit ${{ github.sha }}." \
+              --notes "Automated build from commit ${{ github.sha }}." \
               --target "${{ github.sha }}"
           fi
